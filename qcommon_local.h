@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #ifndef va
@@ -12,5 +12,5 @@ void Com_Error( int code, const char *fmt, ... ) __attribute__ ((noreturn, forma
 void QDECL Com_Printf( const char *msg, ... ) __attribute__ ((format (printf, 1, 2)));
 
 #ifdef __cplusplus
-}
+//}
 #endif

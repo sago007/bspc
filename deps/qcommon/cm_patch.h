@@ -60,7 +60,7 @@ properly.
 */
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #define	MAX_FACETS			1024
@@ -106,5 +106,5 @@ typedef struct {
 struct patchCollide_s	*CM_GeneratePatchCollide( int width, int height, vec3_t *points );
 
 #ifdef __cplusplus
-}
+//}
 #endif

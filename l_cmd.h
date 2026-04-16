@@ -65,7 +65,7 @@ extern char **myargv;
 
 int Q_strncasecmp (const char *s1, const char *s2, int n);
 int Q_strcasecmp (const char *s1, const char *s2);
-EXTERNC void Q_strncpyz( char *dest, const char *src, int destsize );
+void Q_strncpyz( char *dest, const char *src, int destsize );
 void Q_getwd (char *out, size_t size);
 
 int Q_filelength (FILE *f);

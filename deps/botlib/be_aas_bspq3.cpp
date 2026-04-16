@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "aasfile.h"
 #include "botlib.h"
 #include "be_aas.h"
+#include "be_aas_bsp.h"
 #include "be_aas_funcs.h"
 #include "be_aas_def.h"
 
@@ -190,7 +191,7 @@ qboolean AAS_EntityCollision(int entnum,
 //===========================================================================
 qboolean AAS_inPVS(vec3_t p1, vec3_t p2)
 {
-	return botimport.inPVS(p1, p2);
+	return (qboolean)botimport.inPVS(p1, p2);
 } //end of the function AAS_InPVS
 //===========================================================================
 // returns true if in Potentially Visible Set
@@ -276,7 +277,7 @@ int AAS_BSPEntityInRange(int ent)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int AAS_ValueForBSPEpairKey(int ent, char *key, char *value, int size)
+int AAS_ValueForBSPEpairKey(int ent, const char *key, char *value, int size)
 {
 	bsp_epair_t *epair;
 
@@ -299,7 +300,7 @@ int AAS_ValueForBSPEpairKey(int ent, char *key, char *value, int size)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int AAS_VectorForBSPEpairKey(int ent, char *key, vec3_t v)
+int AAS_VectorForBSPEpairKey(int ent, const char *key, vec3_t v)
 {
 	char buf[MAX_EPAIRKEY];
 	double v1, v2, v3;
@@ -320,7 +321,7 @@ int AAS_VectorForBSPEpairKey(int ent, char *key, vec3_t v)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int AAS_FloatForBSPEpairKey(int ent, char *key, float *value)
+int AAS_FloatForBSPEpairKey(int ent, const char *key, float *value)
 {
 	char buf[MAX_EPAIRKEY];
 	
@@ -335,7 +336,7 @@ int AAS_FloatForBSPEpairKey(int ent, char *key, float *value)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int AAS_IntForBSPEpairKey(int ent, char *key, int *value)
+int AAS_IntForBSPEpairKey(int ent, const char *key, int *value)
 {
 	char buf[MAX_EPAIRKEY];
 	

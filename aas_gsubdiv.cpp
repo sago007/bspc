@@ -100,7 +100,7 @@ void AAS_SplitFace(tmp_face_t *face, vec3_t normal, float dist,
 winding_t *AAS_SplitWinding(tmp_area_t *tmparea, int planenum)
 {
 	tmp_face_t *face;
-	plane_t *plane;
+	plane_s *plane;
 	int side;
 	winding_t *splitwinding;
 
@@ -196,7 +196,7 @@ void AAS_SplitArea(tmp_area_t *tmparea, int planenum, tmp_area_t **frontarea, tm
 	tmp_area_t *facefrontarea, *facebackarea, *faceotherarea;
 	tmp_face_t *face, *frontface, *backface, *splitface, *nextface;
 	winding_t *splitwinding;
-	plane_t *splitplane;
+	plane_s *splitplane;
 
 /*
 #ifdef AW_DEBUG
@@ -529,7 +529,7 @@ tmp_node_t *AAS_LadderSubdivideArea_r(tmp_node_t *tmpnode)
 	tmp_face_t *face1;
 	tmp_node_t *tmpnode1, *tmpnode2;
 	vec3_t lowestpoint = {0, 0, 99999}, normal = {0, 0, 1};
-	plane_t *plane;
+	plane_s *plane;
 	winding_t *w;
 
 	tmparea = tmpnode->tmparea;

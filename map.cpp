@@ -38,11 +38,11 @@ side_t				brushsides[MAX_MAPFILE_BRUSHSIDES];
 brush_texture_t		side_brushtextures[MAX_MAPFILE_BRUSHSIDES];
 
 int					nummapplanes;
-plane_t				mapplanes[MAX_MAPFILE_PLANES];
+plane_s				mapplanes[MAX_MAPFILE_PLANES];
 int					mapplaneusers[MAX_MAPFILE_PLANES];
 
 #define				PLANE_HASHES	1024
-plane_t				*planehash[PLANE_HASHES];
+plane_s				*planehash[PLANE_HASHES];
 vec3_t				map_mins, map_maxs;
 
 map_texinfo_t		map_texinfo[MAX_MAPFILE_TEXINFO];
@@ -123,7 +123,7 @@ int PlaneTypeForNormal(vec3_t normal)
 #define	NORMAL_EPSILON	0.0001
 //ME NOTE: changed from 0.01
 #define	DIST_EPSILON	0.02
-qboolean	PlaneEqual(plane_t *p, vec3_t normal, vec_t dist)
+qboolean	PlaneEqual(plane_s *p, vec3_t normal, vec_t dist)
 {
 #if 1
 	if (
@@ -147,7 +147,7 @@ qboolean	PlaneEqual(plane_t *p, vec3_t normal, vec_t dist)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void AddPlaneToHash(plane_t *p)
+void AddPlaneToHash(plane_s *p)
 {
 	int		hash;
 
@@ -165,7 +165,7 @@ void AddPlaneToHash(plane_t *p)
 //===========================================================================
 int CreateNewFloatPlane (vec3_t normal, vec_t dist)
 {
-	plane_t	*p, temp;
+	plane_s	*p, temp;
 
 	if (VectorLength(normal) < 0.5)
 		Error ("FloatPlane: bad normal");
@@ -273,7 +273,7 @@ int FindFloatPlane(vec3_t normal, vec_t dist)
 int FindFloatPlane (vec3_t normal, vec_t dist)
 {
 	int i;
-	plane_t *p;
+	plane_s *p;
 	int hash, h;
 
 	SnapPlane (normal, &dist);
@@ -482,7 +482,7 @@ qboolean MakeBrushWindings(mapbrush_t *ob)
 	int			i, j;
 	winding_t	*w;
 	side_t		*side;
-	plane_t		*plane;
+	plane_s		*plane;
 
 	ClearBounds (ob->mins, ob->maxs);
 
@@ -640,7 +640,7 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 	map_texinfo_t *ti;
 	winding_t *w;
 	side_t *s;
-	plane_t *plane;
+	plane_s *plane;
 
 	if (noliquids)
 	{
@@ -1088,9 +1088,9 @@ void ResetMapLoading(void)
 	memset(side_brushtextures, 0, MAX_MAPFILE_BRUSHSIDES * sizeof(brush_texture_t));
 	//
 	nummapplanes = 0;
-	memset(mapplanes, 0, MAX_MAPFILE_PLANES * sizeof(plane_t));
+	memset(mapplanes, 0, MAX_MAPFILE_PLANES * sizeof(plane_s));
 	//
-	memset(planehash, 0, PLANE_HASHES * sizeof(plane_t *));
+	memset(planehash, 0, PLANE_HASHES * sizeof(plane_s *));
 	//
 	memset(map_texinfo, 0, MAX_MAPFILE_TEXINFO * sizeof(map_texinfo_t));
 	map_numtexinfo = 0;

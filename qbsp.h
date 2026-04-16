@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "l_utils.h"
 #include "l_log.h"
 #include "l_qfiles.h"
+#include "deps/qcommon/q_types.h"
 
 #define BSPC_VERSION		"3.0"
 
@@ -79,15 +80,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define SFL_TEXTURED		8
 #define SFL_CURVE			16
 
-//map plane
-typedef struct plane_s
-{
-	vec3_t normal;
-	vec_t dist;
-	int type;
-	int signbits;
-	struct plane_s	*hash_chain;
-} plane_t;
+
 //brush texture
 typedef struct
 {
@@ -196,7 +189,7 @@ typedef struct node_s
 //bsp portal
 typedef struct portal_s
 {
-	plane_t plane;
+	plane_s plane;
 	node_t *onnode;					// NULL = outside box
 	node_t *nodes[2];				// [0] = front side of plane
 	struct portal_s *next[2];
@@ -260,7 +253,7 @@ extern	char source[1024];
 
 extern	int			entity_num;
 
-extern	plane_t		mapplanes[MAX_MAPFILE_PLANES];
+extern	plane_s		mapplanes[MAX_MAPFILE_PLANES];
 extern	int			nummapplanes;
 extern	int			mapplaneusers[MAX_MAPFILE_PLANES];
 
@@ -308,7 +301,7 @@ extern	int c_clipbrushes;
 extern	int c_squattbrushes;
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 //finds a float plane for the given normal and distance
@@ -358,8 +351,8 @@ typedef struct
 
 extern	textureref_t	textureref[MAX_MAP_TEXTURES];
 
-int TexinfoForBrushTexture(plane_t *plane, brush_texture_t *bt, vec3_t origin);
-void TextureAxisFromPlane(plane_t *pln, vec3_t xv, vec3_t yv);
+int TexinfoForBrushTexture(plane_s *plane, brush_texture_t *bt, vec3_t origin);
+void TextureAxisFromPlane(plane_s *pln, vec3_t xv, vec3_t yv);
 
 //=============================================================================
 // csg
@@ -396,7 +389,7 @@ void BoundBrush(bspbrush_t *brush);
 void FreeBrushList(bspbrush_t *brushes);
 tree_t *BrushBSP(bspbrush_t *brushlist, vec3_t mins, vec3_t maxs);
 bspbrush_t *BrushFromBounds(vec3_t mins, vec3_t maxs);
-int BrushMostlyOnSide(bspbrush_t *brush, plane_t *plane);
+int BrushMostlyOnSide(bspbrush_t *brush, plane_s *plane);
 qboolean WindingIsHuge(winding_t *w);
 qboolean WindingIsTiny(winding_t *w);
 void ResetBrushBSP(void);
@@ -458,6 +451,6 @@ void Tree_PruneNodes_r(node_t *node);
 void Tree_PruneNodes(node_t *node);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 

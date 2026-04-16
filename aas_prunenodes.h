@@ -22,13 +22,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 
 void AAS_PruneNodes(void);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 

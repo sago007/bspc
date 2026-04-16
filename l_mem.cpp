@@ -70,7 +70,7 @@ int MemorySize(void *ptr)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void *GetClearedMemory(int size)
+void *GetClearedMemory(unsigned long size)
 {
 	void *ptr;
 

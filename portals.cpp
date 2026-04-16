@@ -297,7 +297,7 @@ void MakeHeadnodePortals (tree_t *tree)
 	vec3_t		bounds[2];
 	int			i, j, n;
 	portal_t	*p, *portals[6];
-	plane_t		bplanes[6], *pl;
+	plane_s		bplanes[6], *pl;
 	node_t *node;
 
 	node = tree->headnode;
@@ -365,7 +365,7 @@ winding_t *BaseWindingForNode (node_t *node)
 {
 	winding_t	*w;
 	node_t		*n;
-	plane_t		*plane;
+	plane_s		*plane;
 	vec3_t		normal;
 	vec_t		dist;
 
@@ -483,7 +483,7 @@ void SplitNodePortals (node_t *node)
 	portal_t	*p, *next_portal, *new_portal;
 	node_t *f, *b, *other_node;
 	int side;
-	plane_t *plane;
+	plane_s *plane;
 	winding_t *frontwinding, *backwinding;
 
 	plane = &mapplanes[node->planenum];
@@ -795,7 +795,7 @@ qboolean PlaceOccupant (node_t *headnode, vec3_t origin, entity_t *occupant)
 {
 	node_t *node;
 	vec_t	d;
-	plane_t *plane;
+	plane_s *plane;
 
 	//find the leaf to start in
 	node = headnode;
@@ -1181,7 +1181,7 @@ void FindPortalSide (portal_t *p)
 	int			planenum;
 	side_t		*side, *bestside;
 	float		dot, bestdot;
-	plane_t		*p1, *p2;
+	plane_s		*p1, *p2;
 
 	// decide which content change is strongest
 	// solid > lava > water, etc

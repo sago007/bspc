@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 extern botlib_import_t botimport;
 
-aas_settings_t aassettings;
+//aas_settings_t aassettings;
 
 //#define AAS_MOVE_DEBUG
 

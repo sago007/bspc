@@ -42,7 +42,7 @@ static int maxplanenums[3];
 void CheckBSPBrush(bspbrush_t *brush)
 {
 	int i, j;
-	plane_t *plane1, *plane2;
+	plane_s *plane1, *plane2;
 
 	//check if the brush is convex... flipped planes make a brush non-convex
 	for (i = 0; i < brush->numsides; i++)
@@ -91,7 +91,7 @@ void BSPBrushWindings(bspbrush_t *brush)
 {
 	int i, j;
 	winding_t *w;
-	plane_t *plane;
+	plane_s *plane;
 
 	for (i = 0; i < brush->numsides; i++)
 	{
@@ -117,7 +117,7 @@ bspbrush_t *TryMergeBrushes(bspbrush_t *brush1, bspbrush_t *brush2)
 {
 	int i, j, k, n, shared;
 	side_t *side1, *side2, *cs;
-	plane_t *plane1, *plane2;
+	plane_s *plane1, *plane2;
 	bspbrush_t *newbrush;
 
 	//check for bounding box overlapp

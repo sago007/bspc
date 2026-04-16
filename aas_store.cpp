@@ -740,7 +740,7 @@ qboolean AAS_GetPlane(vec3_t normal, vec_t dist, int *planenum)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-qboolean AAS_GetFace(winding_t *w, plane_t *p, int side, int *facenum)
+qboolean AAS_GetFace(winding_t *w, plane_s *p, int side, int *facenum)
 {
 	int edgenum, i, j;
 	aas_face_t *face;
@@ -898,7 +898,7 @@ void AAS_StoreAreaSettings(tmp_areasettings_t *tmpareasettings)
 int AAS_StoreArea(tmp_area_t *tmparea)
 {
 	int side, edgenum, i;
-	plane_t *plane;
+	plane_s *plane;
 	tmp_face_t *tmpface;
 	aas_area_t *aasarea;
 	aas_edge_t *edge;
@@ -1019,7 +1019,7 @@ int AAS_StoreArea(tmp_area_t *tmparea)
 int AAS_StoreTree_r(tmp_node_t *tmpnode)
 {
 	int aasnodenum;
-	plane_t *plane;
+	plane_s *plane;
 	aas_node_t *aasnode;
 
 	//if it is a solid leaf

@@ -23,13 +23,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #include "botlib/be_aas.h"
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 

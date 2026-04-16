@@ -32,7 +32,7 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 typedef voidpf (ZCALLBACK *open_file_func) OF((voidpf opaque, const char* filename, int mode));
@@ -68,7 +68,7 @@ void fill_fopen_filefunc OF((zlib_filefunc_def* pzlib_filefunc_def));
 
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif

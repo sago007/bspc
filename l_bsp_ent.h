@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #ifndef MAX_MAP_ENTITIES
@@ -62,6 +62,6 @@ qboolean ParseEntity(script_t *script);
 epair_t *ParseEpair(script_t *script);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 	

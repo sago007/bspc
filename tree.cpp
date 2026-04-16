@@ -36,7 +36,7 @@ void RemovePortalFromNode (portal_t *portal, node_t *l);
 //===========================================================================
 node_t *NodeForPoint (node_t *node, vec3_t origin)
 {
-	plane_t	*plane;
+	plane_s	*plane;
 	vec_t	d;
 
 	while (node->planenum != PLANENUM_LEAF)
@@ -191,7 +191,7 @@ tree_t *Tree_Alloc(void)
 void Tree_Print_r (node_t *node, int depth)
 {
 	int		i;
-	plane_t	*plane;
+	plane_s	*plane;
 	bspbrush_t	*bb;
 
 	for (i=0 ; i<depth ; i++)

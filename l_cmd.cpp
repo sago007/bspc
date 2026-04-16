@@ -545,12 +545,12 @@ int Q_strcasecmp (const char *s1, const char *s2)
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
-extern "C" int Q_stricmp (char *s1, char *s2)
+int Q_stricmp (const char *s1, const char *s2)
 {
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
-extern "C" void Q_strncpyz( char *dest, const char *src, int destsize ) {
+void Q_strncpyz( char *dest, const char *src, int destsize ) {
 	strncpy( dest, src, destsize-1 );
     dest[destsize-1] = 0;
 }
@@ -1171,7 +1171,7 @@ void QCopyFile (char *from, char *to)
 	FreeMemory(buffer);
 }
 
-extern "C" void FS_FreeFile(void *buf)
+void FS_FreeFile(void *buf)
 {
 	FreeMemory(buf);
 } //end of the function FS_FreeFile

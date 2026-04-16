@@ -68,7 +68,7 @@ void AngleVectors (const vec3_t angles, vec3_t forward, vec3_t right, vec3_t up)
 RadiusFromBounds
 =================
 */
-extern "C" float RadiusFromBounds( const vec3_t mins, const vec3_t maxs ) {
+float RadiusFromBounds( const vec3_t mins, const vec3_t maxs ) {
 	int		i;
 	vec3_t	corner;
 	float	a, b;

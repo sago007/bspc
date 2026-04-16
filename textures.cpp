@@ -83,7 +83,7 @@ const vec3_t 	baseaxis[18] =
 {0,-1,0}, {1,0,0}, {0,0,-1}		// north wall
 };
 
-void TextureAxisFromPlane(plane_t *pln, vec3_t xv, vec3_t yv)
+void TextureAxisFromPlane(plane_s *pln, vec3_t xv, vec3_t yv)
 {
 	int		bestaxis;
 	vec_t	dot,best;
@@ -111,7 +111,7 @@ void TextureAxisFromPlane(plane_t *pln, vec3_t xv, vec3_t yv)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int TexinfoForBrushTexture(plane_t *plane, brush_texture_t *bt, vec3_t origin)
+int TexinfoForBrushTexture(plane_s *plane, brush_texture_t *bt, vec3_t origin)
 {
 	vec3_t	vecs[2];
 	int		sv, tv;

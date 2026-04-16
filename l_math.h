@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <math.h>
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 	
 #ifdef DOUBLEVEC_T
@@ -92,10 +92,10 @@ void AddPointToBounds (const vec3_t v, vec3_t mins, vec3_t maxs);
 void AngleVectors (const vec3_t angles, vec3_t forward, vec3_t right, vec3_t up);
 void R_ConcatRotations (float in1[3][3], float in2[3][3], float out[3][3]);
 void RotatePoint(vec3_t point, float matrix[3][3]);
-void CreateRotationMatrix(vec3_t angles, float matrix[3][3]);
+void CreateRotationMatrix(const vec3_t angles, vec3_t matrix[3]);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
 #endif

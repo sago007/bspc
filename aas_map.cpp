@@ -122,7 +122,7 @@ void AAS_ExpandMapBrush(mapbrush_t *brush, vec3_t mins, vec3_t maxs)
 	int sn;
 	float dist;
 	side_t *s;
-	plane_t *plane;
+	plane_s *plane;
 
 	for (sn = 0; sn < brush->numsides; sn++)
 	{
@@ -245,7 +245,7 @@ void AAS_FixMapBrush(mapbrush_t *brush)
 	int i, j, planenum;
 	float dist;
 	winding_t *w;
-	plane_t *plane, *plane1, *plane2;
+	plane_s *plane, *plane1, *plane2;
 	side_t *side;
 	vec3_t normal;
 
@@ -334,7 +334,7 @@ qboolean AAS_MakeBrushWindings(mapbrush_t *ob)
 	int			i, j;
 	winding_t	*w;
 	side_t		*side;
-	plane_t		*plane, *plane1, *plane2;
+	plane_s		*plane, *plane1, *plane2;
 
 	ClearBounds (ob->mins, ob->maxs);
 

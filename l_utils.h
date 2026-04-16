@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #ifndef MAX_PATH
@@ -80,6 +80,6 @@ qboolean FindQuakeFile(char *basedir, char *gamedir, char *filename, foundfile_t
 #endif //BOTLIB
 
 #ifdef __cplusplus
-}
+//}
 #endif
 

@@ -14,6 +14,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dstricmp=strcasecmp -DCom_Memcpy=memcpy
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} -g -O1")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} -O3")
 
-file(GLOB SOURCES "*.c" "*.cpp" "deps/*/*.c")
+file(GLOB SOURCES "*.c" "*.cpp" "deps/*/*.c" "deps/*/*.cpp")
 add_executable(bspc ${SOURCES})
 target_link_libraries( bspc m pthread)

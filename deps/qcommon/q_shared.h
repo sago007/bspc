@@ -172,9 +172,10 @@ typedef int intptr_t;
 
 
 #include "q_platform.h"
+#include "q_types.h"
 
 #ifdef __cplusplus
-extern "C" {  
+//extern "C" {  
 #endif
 	
 	
@@ -325,7 +326,7 @@ typedef enum {
 #define Hunk_Alloc( size, preference )				Hunk_AllocDebug(size, preference, #size, __FILE__, __LINE__)
 void *Hunk_AllocDebug( int size, ha_pref preference, char *label, char *file, int line );
 #else
-void *Hunk_Alloc( int size, ha_pref preference );
+extern "C" void *Hunk_Alloc( int size, ha_pref preference );
 #endif
 
 #define Com_Memset memset
@@ -346,11 +347,6 @@ MATHLIB
 */
 
 
-typedef float vec_t;
-typedef vec_t vec2_t[2];
-typedef vec_t vec3_t[3];
-typedef vec_t vec4_t[4];
-typedef vec_t vec5_t[5];
 
 typedef	int	fixed4_t;
 typedef	int	fixed8_t;
@@ -675,7 +671,7 @@ void AxisClear( vec3_t axis[3] );
 void AxisCopy( vec3_t in[3], vec3_t out[3] );
 
 void SetPlaneSignbits( struct cplane_s *out );
-int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, struct cplane_s *plane);
+int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, const plane_s *p);
 
 qboolean BoundsIntersect(const vec3_t mins, const vec3_t maxs,
 		const vec3_t mins2, const vec3_t maxs2);
@@ -986,13 +982,17 @@ PlaneTypeForNormal
 
 // plane_t structure
 // !!! if this is changed, it must be changed in asm code too !!!
-typedef struct cplane_s {
+/*typedef struct cplane_s {
 	vec3_t	normal;
 	float	dist;
 	byte	type;			// for fast side tests: 0,1,2 = axial, 3 = nonaxial
 	byte	signbits;		// signx + (signy<<1) + (signz<<2), used as lookup during collision
 	byte	pad[2];
-} cplane_t;
+} cplane_t;*/
+
+
+#define cplane_s plane_s
+#define cplane_t cplane_s
 
 
 // a trace is returned when a box is swept through the world
@@ -1001,7 +1001,7 @@ typedef struct {
 	qboolean	startsolid;	// if true, the initial point was in a solid area
 	float		fraction;	// time completed, 1.0 = didn't hit anything
 	vec3_t		endpos;		// final position
-	cplane_t	plane;		// surface normal at impact, transformed to world space
+	cplane_s	plane;		// surface normal at impact, transformed to world space
 	int			surfaceFlags;	// surface hit
 	int			contents;	// contents on other side of surface hit
 	int			entityNum;	// entity the contacted sirface is a part of
@@ -1412,7 +1412,7 @@ typedef enum _flag_status {
 #define LUMA( red, green, blue ) ( 0.2126f * ( red ) + 0.7152f * ( green ) + 0.0722f * ( blue ) )
 
 #ifdef __cplusplus
-}  
+//}  
 #endif
 
 #endif	// __Q_SHARED_H

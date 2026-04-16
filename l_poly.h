@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 //a winding gives the bounding points of a convex polygon
@@ -125,5 +125,5 @@ int WindingsNonConvex(winding_t *w1, winding_t *w2,
 //#endif //ME
 
 #ifdef __cplusplus
-}
+//}
 #endif

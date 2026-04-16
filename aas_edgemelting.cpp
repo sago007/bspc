@@ -37,7 +37,7 @@ int AAS_MeltFaceWinding(tmp_face_t *face1, tmp_face_t *face2)
 	int i, n;
 	int splits = 0;
 	winding_t *w2, *neww;
-	plane_t *plane1;
+	plane_s *plane1;
 
 #ifdef DEBUG
 	if (!face1->winding) Error("face1 %d without winding", face1->num);

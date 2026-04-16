@@ -929,10 +929,10 @@ void *Z_MallocDebug( int size, char *label, char *file, int line );			// returns
 void *S_MallocDebug( int size, char *label, char *file, int line );			// returns 0 filled memory
 #else
 void *Z_TagMalloc( int size, int tag );	// NOT 0 filled memory
-void *Z_Malloc( int size );			// returns 0 filled memory
+extern "C" void *Z_Malloc( int size );			// returns 0 filled memory
 void *S_Malloc( int size );			// NOT 0 filled memory only for small allocations
 #endif
-void Z_Free( void *ptr );
+extern "C" void Z_Free( void *ptr );
 void Z_FreeTags( int tag );
 int Z_AvailableMemory( void );
 void Z_LogHeap( void );

@@ -70,7 +70,7 @@ void AAS_Error(const char *fmt, ...)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-extern "C" int Sys_MilliSeconds(void)
+int Sys_MilliSeconds(void)
 {
 	return clock() * 1000 / CLOCKS_PER_SEC;
 } //end of the function Sys_MilliSeconds

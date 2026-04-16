@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "cm_polylib.h"
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #define	MAX_SUBMODELS			256
@@ -200,5 +200,5 @@ qboolean CM_PositionTestInPatchCollide( traceWork_t *tw, const struct patchColli
 void CM_ClearLevelPatches( void );
 
 #ifdef __cplusplus
-}
+//}
 #endif

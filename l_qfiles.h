@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "unzip.h"
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 #define QFILETYPE_UNKNOWN			0x8000
@@ -95,5 +95,5 @@ int LoadQuakeFile(quakefile_t *qf, void **bufferptr);
 int ReadQuakeFile(quakefile_t *qf, void *buffer, int offset, int length);
 
 #ifdef __cplusplus
-}
+//}
 #endif

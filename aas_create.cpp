@@ -315,7 +315,7 @@ void AAS_CheckArea(tmp_area_t *tmparea)
 {
 	int side;
 	tmp_face_t *face;
-	plane_t *plane;
+	plane_s *plane;
 	vec3_t wcenter, acenter = {0, 0, 0};
 	vec3_t normal;
 	float n, dist;
@@ -376,7 +376,7 @@ void AAS_CheckFaceWindingPlane(tmp_face_t *face)
 {
 	float dist, sign1, sign2;
 	vec3_t normal;
-	plane_t *plane;
+	plane_s *plane;
 	winding_t *w;
 
 	//check if the winding plane is the same as the face plane
@@ -454,7 +454,7 @@ void AAS_FlipAreaFaces(tmp_area_t *tmparea)
 {
 	int side;
 	tmp_face_t *face;
-	plane_t *plane;
+	plane_s *plane;
 	vec3_t wcenter, acenter = {0, 0, 0};
 	//winding_t *w;
 	float n;

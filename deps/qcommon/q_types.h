@@ -1,6 +1,6 @@
 /*
 ===========================================================================
-Copyright (C) 2016 Poul Sander
+Copyright (C) 2017 Poul Sander
 
 This file is part of bspc source code.
 
@@ -15,20 +15,30 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Foobar; if not, write to the Free Software
+along with Quake III Arena source code; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
-#pragma once
+#ifndef Q_MERGE_H
+#define Q_MERGE_H
 
-#ifdef __cplusplus
-//extern "C" {
-#endif
 
-#include "qcommon/unzip.h"
+typedef float vec_t;
+typedef vec_t vec2_t[2];
+typedef vec_t vec3_t[3];
+typedef vec_t vec4_t[4];
+typedef vec_t vec5_t[5];
 
-#ifdef __cplusplus
-//}
-#endif
+//map plane
+struct plane_s
+{
+	vec3_t normal;
+	vec_t dist;
+	int type;
+	int signbits;
+	struct plane_s	*hash_chain;
+};
+
+#endif /* Q_MERGE_H */
 

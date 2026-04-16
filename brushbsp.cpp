@@ -261,7 +261,7 @@ void CreateBrushWindings (bspbrush_t *brush)
 	int			i, j;
 	winding_t	*w;
 	side_t		*side;
-	plane_t		*plane;
+	plane_s		*plane;
 
 	for (i=0 ; i<brush->numsides ; i++)
 	{
@@ -353,7 +353,7 @@ vec_t BrushVolume (bspbrush_t *brush)
 	winding_t *w;
 	vec3_t corner;
 	vec_t d, area, volume;
-	plane_t *plane;
+	plane_s *plane;
 
 	if (!brush) return 0;
 
@@ -508,7 +508,7 @@ bspbrush_t *CopyBrush (bspbrush_t *brush)
 node_t *PointInLeaf (node_t *node, vec3_t point)
 {
 	vec_t		d;
-	plane_t		*plane;
+	plane_s		*plane;
 
 	while (node->planenum != PLANENUM_LEAF)
 	{
@@ -530,7 +530,7 @@ node_t *PointInLeaf (node_t *node, vec3_t point)
 // Changes Globals:		-
 //===========================================================================
 #if 0
-int BoxOnPlaneSide (vec3_t mins, vec3_t maxs, plane_t *plane)
+int BoxOnPlaneSide (const vec3_t mins, const vec3_t maxs, const plane_t *plane)
 {
 	int		side;
 	int		i;
@@ -575,7 +575,7 @@ int BoxOnPlaneSide (vec3_t mins, vec3_t maxs, plane_t *plane)
 	return side;
 }
 #else
-extern "C" int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, const plane_t *p)
+int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, const plane_s *p)
 {
 	float	dist1, dist2;
 	int sides = 0;
@@ -647,7 +647,7 @@ extern "C" int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, const pla
 int QuickTestBrushToPlanenum (const bspbrush_t *brush, int planenum, int *numsplits)
 {
 	int i, num;
-	plane_t *plane;
+	plane_s *plane;
 	int s;
 
 	*numsplits = 0;
@@ -700,7 +700,7 @@ int TestBrushToPlanenum (bspbrush_t *brush, int planenum,
 						 int *numsplits, qboolean *hintsplit, int *epsilonbrush)
 {
 	int i, j, num;
-	plane_t *plane;
+	plane_s *plane;
 	int s = 0;
 	winding_t *w;
 	vec_t d, d_front, d_back;
@@ -1099,7 +1099,7 @@ side_t *SelectSplitSide (bspbrush_t *brushes, node_t *node)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int BrushMostlyOnSide (bspbrush_t *brush, plane_t *plane)
+int BrushMostlyOnSide (bspbrush_t *brush, plane_s *plane)
 {
 	int			i, j;
 	winding_t	*w;
@@ -1144,7 +1144,7 @@ void SplitBrush (bspbrush_t *brush, int planenum,
 	bspbrush_t	*b[2];
 	int			i, j;
 	winding_t	*w, *cw[2], *midwinding;
-	plane_t		*plane, *plane2;
+	plane_s		*plane, *plane2;
 	side_t		*s, *cs;
 	float d, d_front, d_back;
 

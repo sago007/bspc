@@ -25,16 +25,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // memory.h
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 //#define MEMDEBUG
 #undef MEMDEBUG
 
 #ifndef MEMDEBUG
 
-void *GetClearedMemory(int size);
+void *GetClearedMemory(unsigned long size);
 void *GetMemory(unsigned long size);
 
 #else
@@ -54,6 +54,6 @@ int MemorySize(void *ptr);
 void PrintMemorySize(unsigned long size);
 int TotalAllocatedMemory(void);
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif

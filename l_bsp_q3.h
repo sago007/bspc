@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "q3files.h"
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 	
 extern	int				q3_nummodels;
@@ -84,5 +84,5 @@ void Q3_FreeMaxBSP(void);
 void Q3_ParseEntities (void);
 
 #ifdef __cplusplus
-}
+//}
 #endif

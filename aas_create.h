@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #pragma once
 
 #ifdef __cplusplus
-extern "C" {
+//extern "C" {
 #endif
 
 
@@ -143,6 +143,6 @@ int AAS_GapFace(tmp_face_t *tmpface, int side);
 int AAS_GroundFace(tmp_face_t *tmpface);
 
 #ifdef __cplusplus
-}
+//}
 #endif
 
