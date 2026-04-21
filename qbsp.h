@@ -234,6 +234,7 @@ extern	qboolean nobrushmerge;
 extern	qboolean cancelconversion;
 extern	qboolean noliquids;
 extern	qboolean capsule_collision;
+extern	qboolean logpatches;
 #endif //ME
 
 extern	float subdivide_size;

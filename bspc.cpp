@@ -76,6 +76,7 @@ qboolean	cancelconversion;	//qtrue if the conversion is being cancelled
 qboolean	noliquids;			//no liquids when writing map file
 qboolean	forcesidesvisible;	//force all brush sides to be visible when loaded from bsp
 qboolean	capsule_collision = qfalse;
+qboolean	logpatches;			//log one line per Q3 patch surface during -bsp2aas
 
 /*
 ============================================================================
@@ -473,6 +474,11 @@ int main (int argc, char **argv)
 			forcesidesvisible = qtrue;
 			Log_Print("forcesidesvisible = qtrue\n");
 		} //end else if
+		else if (!Q_strcasecmp(argv[i], "-logpatches"))
+		{
+			logpatches = qtrue;
+			Log_Print("logpatches = qtrue\n");
+		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-output"))
 		{
 			if (i + 1 >= argc) {
@@ -786,6 +792,7 @@ int main (int argc, char **argv)
 			"   nocsg                                = disables brush chopping\n"
 			"   forcesidesvisible                    = force all sides to be visible\n"
 			"   grapplereach                         = calculate grapple reachabilities\n"
+			"   logpatches                           = log per-patch stats during -bsp2aas\n"
 
 /*			"   glview     = output a GL view\n"
 			"   draw       = enables drawing\n"

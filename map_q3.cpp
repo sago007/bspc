@@ -440,6 +440,10 @@ void AAS_CreateCurveBrushes(void)
 	side_t *side;
 	entity_t *mapent;
 	winding_t *winding;
+	int log_processed = 0;
+	int log_skipped_nonsolid = 0;
+	int log_skipped_nobotclip = 0;
+	int log_total_facets = 0;
 
 	qprintf("nummapbrushsides = %d\n", nummapbrushsides);
 	mapent = &entities[0];
@@ -451,10 +455,24 @@ void AAS_CreateCurveBrushes(void)
 		if (!(q3_dshaders[surface->shaderNum].contentFlags & (CONTENTS_SOLID|CONTENTS_PLAYERCLIP)))
 		{
 			//Log_Print("skipped non-solid curve\n");
+			if (logpatches)
+			{
+				Log_Print("patch log: surf=%d shader=%s grid=%dx%d skipped=nonsolid\n",
+					i, q3_dshaders[surface->shaderNum].shader,
+					surface->patchWidth, surface->patchHeight);
+			}
+			log_skipped_nonsolid++;
 			continue;
 		} //end if
 		// if this curve should not be used for AAS
 		if ( q3_dshaders[surface->shaderNum].contentFlags & CONTENTS_NOBOTCLIP ) {
+			if (logpatches)
+			{
+				Log_Print("patch log: surf=%d shader=%s grid=%dx%d skipped=nobotclip\n",
+					i, q3_dshaders[surface->shaderNum].shader,
+					surface->patchWidth, surface->patchHeight);
+			}
+			log_skipped_nobotclip++;
 			continue;
 		}
 		//
@@ -574,9 +592,26 @@ void AAS_CreateCurveBrushes(void)
 				mapent->numbrushes++;
 			} //end else
 		} //end for
+		if (logpatches)
+		{
+			Log_Print("patch log: surf=%d shader=%s grid=%dx%d facets=%d planes=%d cum_facets=%d cum_brushes=%d\n",
+				i, q3_dshaders[surface->shaderNum].shader,
+				width, height,
+				pc->numFacets, pc->numPlanes,
+				log_total_facets + pc->numFacets,
+				numcurvebrushes);
+		}
+		log_processed++;
+		log_total_facets += pc->numFacets;
 	} //end for
 	//qprintf("\r%6d curve brushes", nummapbrushsides);//++numcurvebrushes);
 	qprintf("\r%6d curve brushes\n", numcurvebrushes);
+	if (logpatches)
+	{
+		Log_Print("patch log summary: processed=%d skipped_nonsolid=%d skipped_nobotclip=%d total_facets=%d total_brushes=%d\n",
+			log_processed, log_skipped_nonsolid, log_skipped_nobotclip,
+			log_total_facets, numcurvebrushes);
+	}
 } //end of the function AAS_CreateCurveBrushes
 //===========================================================================
 //
