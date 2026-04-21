@@ -765,11 +765,11 @@ int main (int argc, char **argv)
 	{
 		Log_Print("Usage:   bspc [-<switch> [-<switch> ...]]\n"
 #if defined(WIN32) || defined(_WIN32)
-			"Example 1: bspc -bsp2aas d:\\quake3\\baseq3\\maps\\mymap?.bsp\n"
-			"Example 2: bspc -bsp2aas d:\\quake3\\baseq3\\pak0.pk3\\maps/q3dm*.bsp\n"
+			"Example 1: bspc -optimize -forcesidesvisible -bsp2aas d:\\quake3\\baseq3\\maps\\mymap?.bsp\n"
+			"Example 2: bspc -optimize -forcesidesvisible -bsp2aas d:\\quake3\\baseq3\\pak0.pk3\\maps/q3dm*.bsp\n"
 #else
-			"Example 1: bspc -bsp2aas /quake3/baseq3/maps/mymap?.bsp\n"
-			"Example 2: bspc -bsp2aas /quake3/baseq3/pak0.pk3/maps/q3dm*.bsp\n"
+			"Example 1: bspc -optimize -forcesidesvisible -bsp2aas /quake3/baseq3/maps/mymap?.bsp\n"
+			"Example 2: bspc -optimize -forcesidesvisible -bsp2aas /quake3/baseq3/pak0.pk3/maps/q3dm*.bsp\n"
 #endif
 			"\n"
 			"Switches:\n"
