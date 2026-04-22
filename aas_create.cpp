@@ -1094,10 +1094,15 @@ void AAS_Create(const char *aasfile)
 	AAS_CreateAreas(tree->headnode);
 	//free the BSP tree because it isn't used anymore
 	if (freetree) Tree_Free(tree);
+	//global T-junction melt so subsequent merge passes see matching edges
+	//across area boundaries; fixes the scope gap in AAS_MeltAreaFaceWindings
+	AAS_MeltAllFaceWindings();
 	//try to merge area faces
 	AAS_MergeAreaFaces();
 	//do gravitational subdivision
 	AAS_GravitationalSubdivision();
+	//gsubdiv introduces new cuts; melt again before the next merge passes
+	AAS_MeltAllFaceWindings();
 	//merge faces if possible
 	AAS_MergeAreaFaces();
 	AAS_RemoveAreaFaceColinearPoints();
@@ -1114,7 +1119,7 @@ void AAS_Create(const char *aasfile)
 	AAS_MergeAreaPlaneFaces();
 	//do ladder subdivision
 	AAS_LadderSubdivision();
-	//FIXME: melting is buggy
+	//legacy per-area melt; now redundant in practice but left in place
 	AAS_MeltAreaFaceWindings();
 	//remove tiny faces
 	AAS_RemoveTinyFaces();
