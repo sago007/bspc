@@ -346,6 +346,165 @@ winding_t *Q3_BrushSideWinding(q3_dbrush_t *brush, q3_dbrushside_t *baseside)
 	return w;
 } //end of the function Q3_BrushSideWinding
 //===========================================================================
+// bounding boxes of the draw surfaces, used to quickly reject surfaces
+// that cannot touch a brush side
+//
+// Parameter:				-
+// Returns:					-
+// Changes Globals:		-
+//===========================================================================
+typedef struct
+{
+	vec3_t mins;
+	vec3_t maxs;
+} q3_surfacebounds_t;
+
+static q3_surfacebounds_t *q3_surfacebounds;
+
+//a draw surface and a brush side are considered to lie in the same plane
+//when their plane distances and normals are this close
+#define SIDE_PLANE_DIST_EPSILON		5
+#define SIDE_PLANE_DOT_EPSILON		0.9
+//slack added to the brush side bounds when rejecting draw surfaces
+#define SIDE_BOUNDS_EPSILON			8
+
+static void Q3_CreateSurfaceBounds(void)
+{
+	int i, j;
+	q3_dsurface_t *surface;
+
+	q3_surfacebounds = (q3_surfacebounds_t *) GetClearedMemory(q3_numDrawSurfaces * sizeof(q3_surfacebounds_t));
+	for (i = 0; i < q3_numDrawSurfaces; i++)
+	{
+		surface = &q3_drawSurfaces[i];
+		ClearBounds(q3_surfacebounds[i].mins, q3_surfacebounds[i].maxs);
+		for (j = 0; j < surface->numVerts; j++)
+		{
+			AddPointToBounds(q3_drawVerts[surface->firstVert + j].xyz, q3_surfacebounds[i].mins, q3_surfacebounds[i].maxs);
+		} //end for
+	} //end for
+} //end of the function Q3_CreateSurfaceBounds
+//===========================================================================
+//
+// Parameter:				-
+// Returns:					-
+// Changes Globals:		-
+//===========================================================================
+static qboolean Q3_BoundsOverlap(vec3_t mins1, vec3_t maxs1, vec3_t mins2, vec3_t maxs2, float epsilon)
+{
+	int i;
+
+	for (i = 0; i < 3; i++)
+	{
+		if (mins1[i] > maxs2[i] + epsilon) return qfalse;
+		if (maxs1[i] < mins2[i] - epsilon) return qfalse;
+	} //end for
+	return qtrue;
+} //end of the function Q3_BoundsOverlap
+//===========================================================================
+// returns true when the plane is pretty much the same as the brush side plane
+//
+// Parameter:				-
+// Returns:					-
+// Changes Globals:		-
+//===========================================================================
+static qboolean Q3_PlaneMatchesSide(vec3_t normal, float dist, q3_dplane_t *sideplane)
+{
+	float dot;
+
+	if (fabs(fabs(dist) - fabs(sideplane->dist)) > SIDE_PLANE_DIST_EPSILON) return qfalse;
+	dot = DotProduct(normal, sideplane->normal);
+	if (dot > -SIDE_PLANE_DOT_EPSILON && dot < SIDE_PLANE_DOT_EPSILON) return qfalse;
+	return qtrue;
+} //end of the function Q3_PlaneMatchesSide
+//===========================================================================
+// returns the area of the winding covered by the triangle,
+// zero when the triangle is not in the plane of the brush side
+//
+// Parameter:				-
+// Returns:					-
+// Changes Globals:		-
+//===========================================================================
+static float Q3_TriangleOnWinding(float *v0, float *v1, float *v2, q3_dplane_t *sideplane, winding_t *winding)
+{
+	int i;
+	float dist, area;
+	float *verts[3];
+	float *edgestart, *edgeend, *opposite;
+	vec3_t t1, t2, trinormal, edgevec, normal;
+	winding_t *w;
+
+	VectorSubtract(v1, v0, t1);
+	VectorSubtract(v2, v0, t2);
+	CrossProduct(t1, t2, trinormal);
+	//degenerate triangle
+	if (VectorNormalize(trinormal) < 0.5) return 0;
+	if (!Q3_PlaneMatchesSide(trinormal, DotProduct(v0, trinormal), sideplane)) return 0;
+	//chop the winding with the three edge planes of the triangle
+	verts[0] = v0;
+	verts[1] = v1;
+	verts[2] = v2;
+	w = CopyWinding(winding);
+	for (i = 0; i < 3 && w; i++)
+	{
+		edgestart = verts[i];
+		edgeend = verts[(i + 1) % 3];
+		opposite = verts[(i + 2) % 3];
+		VectorSubtract(edgeend, edgestart, edgevec);
+		CrossProduct(edgevec, trinormal, normal);
+		VectorNormalize(normal);
+		dist = DotProduct(normal, edgestart);
+		//the edge plane must point inward, towards the opposite vertex
+		if (DotProduct(normal, opposite) - dist < 0)
+		{
+			VectorNegate(normal, normal);
+			dist = -dist;
+		} //end if
+		ChopWindingInPlace(&w, normal, dist, -0.1); //CLIP_EPSILON
+	} //end for
+	if (!w) return 0;
+	area = WindingArea(w);
+	FreeWinding(w);
+	return area;
+} //end of the function Q3_TriangleOnWinding
+//===========================================================================
+// returns true when part of the draw surface lies on the brush side winding
+//
+// q3map2 merges faces into planar surfaces whose vertices are not a convex
+// outline, so the surface is tested triangle by triangle using the draw
+// indexes. Surfaces without indexes fall back to the convex polygon test.
+//
+// Parameter:				-
+// Returns:					-
+// Changes Globals:		-
+//===========================================================================
+static qboolean Q3_SurfaceOnWinding(int surfacenum, q3_dplane_t *sideplane, winding_t *w, vec3_t wmins, vec3_t wmaxs)
+{
+	int i, *indexes;
+	q3_dsurface_t *surface;
+	q3_drawVert_t *verts;
+	q3_dplane_t *plane;
+
+	surface = &q3_drawSurfaces[surfacenum];
+	if (surface->surfaceType != MST_PLANAR && surface->surfaceType != MST_TRIANGLE_SOUP) return qfalse;
+	if (!Q3_BoundsOverlap(wmins, wmaxs, q3_surfacebounds[surfacenum].mins, q3_surfacebounds[surfacenum].maxs, SIDE_BOUNDS_EPSILON)) return qfalse;
+	if (surface->numIndexes < 3)
+	{
+		if (surface->surfaceType != MST_PLANAR) return qfalse;
+		plane = &q3_surfaceplanes[surfacenum];
+		if (!Q3_PlaneMatchesSide(plane->normal, plane->dist, sideplane)) return qfalse;
+		if (Q3_FaceOnWinding(surface, w) > 0) return qtrue;
+		return qfalse;
+	} //end if
+	verts = &q3_drawVerts[surface->firstVert];
+	indexes = &q3_drawIndexes[surface->firstIndex];
+	for (i = 0; i + 2 < surface->numIndexes; i += 3)
+	{
+		if (Q3_TriangleOnWinding(verts[indexes[i]].xyz, verts[indexes[i + 1]].xyz, verts[indexes[i + 2]].xyz, sideplane, w) > 0) return qtrue;
+	} //end for
+	return qfalse;
+} //end of the function Q3_SurfaceOnWinding
+//===========================================================================
 // fix screwed brush texture references
 //
 // Parameter:				-
@@ -357,18 +516,17 @@ qboolean WindingIsTiny(winding_t *w);
 void Q3_FindVisibleBrushSides(void)
 {
 	int i, j, k, we, numtextured, numsides;
-	float dot;
-	q3_dplane_t *plane;
 	q3_dbrushside_t *brushside;
 	q3_dbrush_t *brush;
-	q3_dsurface_t *surface;
 	winding_t *w;
+	vec3_t wmins, wmaxs;
 
 	memset(q3_dbrushsidetextured, qfalse, Q3_MAX_MAP_BRUSHSIDES);
 	//
 	numsides = 0;
 	//create planes for the planar surfaces
 	Q3_CreatePlanarSurfacePlanes();
+	Q3_CreateSurfaceBounds();
 	Log_Print("searching visible brush sides...\n");
 	Log_Print("%6d brush sides", numsides);
 	//go over all the brushes
@@ -419,23 +577,13 @@ void Q3_FindVisibleBrushSides(void)
 				q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 				continue;
 			} //end if
-			//find a face for texturing this brush
+			//find a drawn surface on this brush side
+			WindingBounds(w, wmins, wmaxs);
 			for (k = 0; k < q3_numDrawSurfaces; k++)
 			{
-				surface = &q3_drawSurfaces[k];
-				if (surface->surfaceType != MST_PLANAR) continue;
-				//
-				//Q3_SurfacePlane(surface, plane.normal, &plane.dist);
-				plane = &q3_surfaceplanes[k];
-				//the surface plane and the brush side plane should be pretty much the same
-				if (fabs(fabs(plane->dist) - fabs(q3_dplanes[brushside->planeNum].dist)) > 5) continue;
-				dot = DotProduct(plane->normal, q3_dplanes[brushside->planeNum].normal);
-				if (dot > -0.9 && dot < 0.9) continue;
-				//if the face is partly or totally on the brush side
-				if (Q3_FaceOnWinding(surface, w))
+				if (Q3_SurfaceOnWinding(k, &q3_dplanes[brushside->planeNum], w, wmins, wmaxs))
 				{
 					q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
-					//Log_Write("Q3_FaceOnWinding");
 					break;
 				} //end if
 			} //end for
@@ -450,6 +598,8 @@ void Q3_FindVisibleBrushSides(void)
 		if (q3_dbrushsidetextured[i]) numtextured++;
 	} //end for
 	Log_Print("%d brush sides textured out of %d\n", numtextured, q3_numbrushsides);
+	FreeMemory(q3_surfacebounds);
+	q3_surfacebounds = NULL;
 } //end of the function Q3_FindVisibleBrushSides
 
 /*
